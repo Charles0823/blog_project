@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        h1 {
+            background-color: #0e2136;
+            text-align: center;
+            padding: 20px 0; /* 위아래 여백 추가 */
+            font-size: 55px; /* 폰트 크기 키우기 */
+            font-weight: bold; /* 글꼴 굵게 */
+            margin: 0; /* h1의 margin 제거 */
+            color: #ffffff; /* 흰색 글자색 */
+        }
+        .layout-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background-color: #3e2f36;
+            color: #ffffff; /* 흰색 글자색 */
+            font-size: 20px; /* 폰트 크기 키우기 */
+            padding: 30px 0;
+        }
+        .changes {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 10px;
+            margin-top: 20px;
+            font-size: 17px;
+        }
+        .change-list {
+            margin-right: 10px;
+        }
+        .chage-update {
+            margin-right: 10px;
+        }
+        section {
+            padding-left: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<h1>StarCraft</h1>
+
+<div class="changes">
+    <div class="change-list">
+        <a href="{% url 'blog:post_list' %}">목록</a>
+    </div>
+    <div class="chage-update">
+    {% if user == post.author %}
+    <a href="{% url 'blog:post_edit' post.pk %}">수정</a>
+    <a href="{% url 'blog:post_delete' post.pk %}">삭제</a>
+    {% endif %}
+    </div>
+</div>
+<section>
+<p>{{object.title}}</p>
+<p>{{object.content}}</p>
+
+<p>{{post.title}}</p>
+<br>
+<p>{{post.content}}</p>
+<p>조회수 : {{post.view_count}}</p>
+{% if post.file_upload %}
+<video src="{{post.file_upload.url}}" controls></video>
+{% endif %}
+</section>
+<hr>
+<section>
+    <br>
+    <h3>댓글</h3>
+        {% for comment in post.comments.all %}
+        <p>{{ comment.message }}</p> 
+        <p>{{ comment.author }} - {{ comment.updated_at }}</p>
+        {% endfor %}
+
+</section>
+<section class="comment-form">
+    <form action="{% url 'blog:comment_new' post.pk %}" method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <input type="submit" value="댓글 작성">
+    </form>
+</section>
+
+<footer class="layout-footer">
+    Copyright © 2023 Charles All rights reserved
+</footer>
+</body>
+</html>

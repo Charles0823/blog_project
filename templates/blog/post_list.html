@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        h1 {
+            background-color: #0e2136;
+            text-align: center;
+            padding: 20px 0; /* 위아래 여백 추가 */
+            font-size: 55px; /* 폰트 크기 키우기 */
+            font-weight: bold; /* 글꼴 굵게 */
+            margin: 0; /* h1의 margin 제거 */
+            color: #ffffff; /* 흰색 글자색 */
+        }
+        .layout-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background-color: #3e2f36;
+            color: #ffffff; /* 흰색 글자색 */
+            font-size: 20px; /* 폰트 크기 키우기 */
+            padding: 30px 0;
+        }
+        .post-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .post-item {
+            width: 30%;
+            margin-bottom: 20px;
+        }
+        .Search {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 20px;
+            margin-top: 20px;
+        }
+        .accounts-log {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 20px;
+        }
+        .accounts-login {
+            margin-right:10px;
+        }
+        .accounts-register {
+            margin-right:10px;
+        }
+        section {
+            padding-left: 10px; /* 왼쪽 여백 추가 */
+            font-size: 18px;
+        }
+        
+    </style>
+</head>
+<body>
+    
+<h1>StarCraft</h1>
+
+<br>
+
+<section>
+    <a href="{% url 'blog:post_write' %}">글작성</a>
+    <div class="accounts-log">
+        <div class="accounts-register">
+            {% if user == post.author %}
+            <a href="http://127.0.0.1:8000/accounts/register/">내정보</a>
+            {% endif %}
+        </div>
+        <div class="accounts-login">
+            <a href="http://127.0.0.1:8000/accounts/login/">로그인</a>
+        </div>
+        <a href="http://127.0.0.1:8000/accounts/register/">회원가입</a>
+    </div>
+    <div class="Search">
+    <br>
+    <form action="" method="GET">
+    <input type="text" name="q" value="{{ request.GET.q }}">
+    <input type="submit" value="검색">
+</form>
+</div>
+<br>
+<br>
+<div class="post-list">
+    {% for post in post_list %}
+    <div class="post-item">
+        <a href="{% url 'blog:post_detail' post.pk %}">
+            {{ post.title }}
+        </a>
+    </div>
+    {% endfor %}
+</div>
+</section>
+<footer class="layout-footer">
+    Copyright © 2023 Charles All rights reserved
+</footer>
+</body>
+</html>
